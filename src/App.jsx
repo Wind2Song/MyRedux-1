@@ -6,7 +6,7 @@ export const App = () => {
   const [appState, setAppState] = useState({
     user: {name: 'frank', age: 18}
   })
-  const contextValue = {appState, setAppState}
+  const contextValue = {appState, setAppState} // 封装成对象 给appContext上下文
   return (
     <appContext.Provider value={contextValue}>
       <大儿子/>
@@ -18,15 +18,17 @@ export const App = () => {
 const 大儿子 = () => <section>大儿子<User/></section>
 const 二儿子 = () => <section>二儿子<UserModifier/></section>
 const 幺儿子 = () => <section>幺儿子</section>
+// 令User 从上下文里 获取信息name:frank 
 const User = () => {
   const contextValue = useContext(appContext)
   return <div>User:{contextValue.appState.user.name}</div>
 
 }
+// 令UserModifier 从上下文 修改/设置信息，即调用setAppState()
 const UserModifier = () => {
-  const {appState, setAppState} = useContext(appContext)
+  const contextValue = useContext(appContext)
   const onChange = (e) => {
-    appState.user.name = e.target.value
+    contextValue.appState.user.name = e.target.value // 将用户输入的value赋值给user.name，也就是修改username
     setAppState({...contextValue.appState})
   }
   return <div>
@@ -34,4 +36,3 @@ const UserModifier = () => {
       onChange={onChange}/>
   </div>
 }
-
